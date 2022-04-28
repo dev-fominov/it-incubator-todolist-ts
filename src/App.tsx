@@ -37,41 +37,20 @@ function App() {
         ]
     });
 
-    // let [todolists, setTodolists] = useState<Array<TodolistsType>>([
-    //     { id: v1(), title: 'What to learn', filter: 'all' },
-    //     { id: v1(), title: 'What to buy', filter: 'all' },
-    // ])
-
-    // let [tasks, setTasks] = useState<Array<TaskType>>([
-    //     { id: v1(), title: 'HTML', isDone: true },
-    //     { id: v1(), title: 'HTML 2', isDone: false },
-    //     { id: v1(), title: 'HTML 3', isDone: true },
-    //     { id: v1(), title: 'HTML 4', isDone: true },
-    //     { id: v1(), title: 'HTML 5', isDone: true },
-    // ]);
-    // let [filter, setFilter] = useState<FilterValuesType>('all');
-
     function removeTask(todolistID: string, taskId: string) {
         setTasks({...tasks, [todolistID]:tasks[todolistID].filter(t=>t.id!==taskId)})
-        // let filterTasks = tasks.filter(t => t.id !== id)
-        // setTasks(filterTasks)
-        // debugger
     }
+    const removeTodolistHandler = (todolistID:string) => {
+		setTodolists(todolists.filter(t=>t.id !== todolistID))
+	}
 
     function addTask(todolistID: string, title: string) {
         let newTask = { id: v1(), title: title, isDone: false };
-        // let newTasks = [newTask, ...tasks];
         setTasks({...tasks, [todolistID]:[newTask, ...tasks[todolistID]]})
-        // 
-        // 
-        // setTasks(newTasks);
     }
 
-    function changeStatus(taskId: string, isDone: boolean) {
-        // let task = tasks.find(t => t.id === taskId)
-        // if (task) { task.isDone = isDone }
-        // let copy = [...tasks]
-        // setTasks(copy)
+    function changeStatus(todolistID: string, taskId: string, isDone: boolean) {
+        setTasks({...tasks, [todolistID]:tasks[todolistID].map(el=>el.id===taskId ? {...el,isDone} : el)})
     }
 
     function changeFilter(todolistID: string, value: FilterValuesType) {
@@ -93,6 +72,7 @@ function App() {
 
                     return (
                         <TodoList
+                            key={t.id}
                             todolistID={t.id}
                             title={t.title}
                             tasks={tasksForTodoList}
@@ -101,12 +81,11 @@ function App() {
                             addTask={addTask}
                             changeStatus={changeStatus}
                             filter={t.filter}
+                            removeTodolistHandler={removeTodolistHandler}
                         />
                     )
                 })
             }
-
-
         </div>
     );
 }
