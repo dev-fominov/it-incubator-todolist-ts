@@ -5,9 +5,9 @@ type TodoListPropsType = {
 	todolistID: string
 	title: string
 	tasks: TaskType[]
-	removeTask: (id: string) => void
+	removeTask: (todolistID:string, taskId: string) => void
 	changeFilter: (todolistID:string, value: FilterValuesType) => void
-	addTask: (title: string) => void
+	addTask: (todolistID:string, title: string) => void
 	changeStatus: (taskId: string, isDone: boolean) => void
 	filter: FilterValuesType
 }
@@ -29,7 +29,7 @@ export const TodoList = (props: TodoListPropsType) => {
 	const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
 		setError(null)
 		if (e.charCode === 13) {
-			props.addTask(newTaskTitle);
+			props.addTask(props.todolistID, newTaskTitle);
 			setNewTaskTitle("");
 		}
 	}
@@ -39,7 +39,7 @@ export const TodoList = (props: TodoListPropsType) => {
 			setError("Title is required")
 			return
 		}
-		props.addTask(newTaskTitle.trim());
+		props.addTask(props.todolistID, newTaskTitle.trim());
 		setNewTaskTitle("");
 	}
 
@@ -73,7 +73,7 @@ export const TodoList = (props: TodoListPropsType) => {
 
 							/>
 							<span>{t.title}</span>
-							<button onClick={() => { props.removeTask(t.id) }}>x</button>
+							<button onClick={() => { props.removeTask( props.todolistID, t.id) }}>x</button>
 						</li>
 					})
 				}
