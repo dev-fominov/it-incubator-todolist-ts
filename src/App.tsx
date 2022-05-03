@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { v1 } from 'uuid';
 import './App.css';
-import { TodoList, TaskType } from './TodoList';
+import FullInput from './FullInput';
+import { TodoList } from './TodoList';
 
 export type FilterValuesType = "all" | "completed" | "active";
 export type TodolistsType = {
@@ -38,27 +39,35 @@ function App() {
     });
 
     function removeTask(todolistID: string, taskId: string) {
-        setTasks({...tasks, [todolistID]:tasks[todolistID].filter(t=>t.id!==taskId)})
+        setTasks({ ...tasks, [todolistID]: tasks[todolistID].filter(t => t.id !== taskId) })
     }
-    const removeTodolistHandler = (todolistID:string) => {
-		setTodolists(todolists.filter(t=>t.id !== todolistID))
-	}
+    const removeTodolistHandler = (todolistID: string) => {
+        setTodolists(todolists.filter(t => t.id !== todolistID))
+    }
 
     function addTask(todolistID: string, title: string) {
         let newTask = { id: v1(), title: title, isDone: false };
-        setTasks({...tasks, [todolistID]:[newTask, ...tasks[todolistID]]})
+        setTasks({ ...tasks, [todolistID]: [newTask, ...tasks[todolistID]] })
     }
 
     function changeStatus(todolistID: string, taskId: string, isDone: boolean) {
-        setTasks({...tasks, [todolistID]:tasks[todolistID].map(el=>el.id===taskId ? {...el,isDone} : el)})
+        setTasks({ ...tasks, [todolistID]: tasks[todolistID].map(el => el.id === taskId ? { ...el, isDone } : el) })
     }
 
     function changeFilter(todolistID: string, value: FilterValuesType) {
         setTodolists(todolists.map(el => el.id === todolistID ? { ...el, filter: value } : el))
     }
 
+    const addTodoList = (newTitle: string) => {
+        let newID = v1()
+        let newTodolist: TodolistsType = { id: newID, title: newTitle, filter: 'all' }
+        setTodolists([...todolists, newTodolist])
+        setTasks({ ...tasks, [newID]: [] })
+    }
+
     return (
         <div className="App">
+            <FullInput callBack={addTodoList} />
             {
                 todolists.map((t: TodolistsType) => {
                     let tasksForTodoList = tasks[t.id];
