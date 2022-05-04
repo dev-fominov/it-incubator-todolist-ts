@@ -27,10 +27,14 @@ export const TodoList = (props: TodoListPropsType) => {
 		props.addTask(props.todolistID, newTitle)
 	}
 
+	const onChangeTitleHandler = () => {
+		// Code
+	}
+
 	return (
 		<div>
 			<h3>
-				<EditableSpan title={props.title} />
+				<EditableSpan title={props.title} onChange={onChangeTitleHandler} />
 				<button onClick={() => props.removeTodolistHandler(props.todolistID)}>x</button>
 			</h3>
 			<FullInput callBack={addTaskHandler} />
@@ -38,14 +42,14 @@ export const TodoList = (props: TodoListPropsType) => {
 				{
 					props.tasks.map((t) => {
 
-						const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+						const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
 							props.changeStatus(props.todolistID, t.id, e.currentTarget.checked);
 						}
 
 						return <li key={t.id}>
 							<input
 								type="checkbox"
-								onChange={onChangeHandler}
+								onChange={onChangeStatusHandler}
 								checked={t.isDone}
 
 							/>
