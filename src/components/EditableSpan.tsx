@@ -13,7 +13,7 @@ function EditableSpan(props: EditableSpanType) {
 	const activateEdit = () => {
 		setEdit(true)
 		setTitle(props.title)
-	}
+	} 
 	const activateView = () => {
 		setEdit(false)
 		props.onChange(title)
