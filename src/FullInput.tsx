@@ -1,3 +1,5 @@
+import { AddBox } from "@mui/icons-material";
+import { Button, TextField } from "@mui/material";
 import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 
 export type FullInputType = {
@@ -32,14 +34,15 @@ function FullInput(props: FullInputType) {
 
 	return (
 		<div>
-			<input
+			<TextField
 				value={newTaskTitle}
 				onChange={onNewTitleChangeHandler}
 				onKeyPress={onKeyPressHandler}
-				className={error ? "error" : ""}
+				error={!!error}
+				helperText={error}
+				variant="outlined"
 			/>
-			<button onClick={addTaskHandler}>+</button>
-			{error && <div className="error-message">{error}</div>}
+			<Button onClick={addTaskHandler} variant="contained" > + </Button>
 		</div>
 	)
 }
