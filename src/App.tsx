@@ -19,6 +19,10 @@ export type ArrayTaskType = {
     tasks: TaskType[]
 }
 
+export type TasksType = {
+    [userID: string]: TaskType[]
+}
+
 function App() {
 
     let todolistID1 = v1();
@@ -103,10 +107,10 @@ function App() {
                         todolists.map((t: TodolistsType) => {
                             let tasksForTodoList = tasks[t.id];
                             if (t.filter === 'completed') {
-                                tasksForTodoList = tasks[t.id].filter((t:any) => t.isDone === true);
+                                tasksForTodoList = tasks[t.id].filter(t => t.isDone === true);
                             }
                             if (t.filter === 'active') {
-                                tasksForTodoList = tasks[t.id].filter((t:any) => t.isDone === false);
+                                tasksForTodoList = tasks[t.id].filter(t => t.isDone === false);
                             }
 
                             return (

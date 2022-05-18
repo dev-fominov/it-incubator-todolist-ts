@@ -1,21 +1,21 @@
 import { v1 } from "uuid";
-// import { ArrayTaskType } from "../App";
+import { TasksType } from "../App";
 
 
-export const tasksReducer = (state: any, action: tasksReduserType) => {
+export const tasksReducer = (state: TasksType, action: tasksReduserType) => {
 	switch (action.type) {
 		case 'REMOVE_TASK': {
-			return { ...state, [action.payload.todolistID]: state[action.payload.todolistID].filter((t: any) => t.id !== action.payload.taskId) }
+			return { ...state, [action.payload.todolistID]: state[action.payload.todolistID].filter(t => t.id !== action.payload.taskId) }
 		}
 		case 'ADD_TASK': {
 			let newTask = { id: v1(), title: action.payload.title, isDone: false };
 			return { ...state, [action.payload.todolistID]: [newTask, ...state[action.payload.todolistID]] }
 		}
 		case 'CHANGE_STATUS': {
-			return { ...state, [action.payload.todolistID]: state[action.payload.todolistID].map((el: any) => el.id === action.payload.taskId ? { ...el, isDone: action.payload.isDone } : el) }
+			return { ...state, [action.payload.todolistID]: state[action.payload.todolistID].map(el => el.id === action.payload.taskId ? { ...el, isDone: action.payload.isDone } : el) }
 		}
 		case 'CHANGE_TASK_TITLE': {
-			return { ...state, [action.payload.todolistID]: state[action.payload.todolistID].map((el: any) => el.id === action.payload.taskId ? { ...el, title: action.payload.newValue } : el) }
+			return { ...state, [action.payload.todolistID]: state[action.payload.todolistID].map(el => el.id === action.payload.taskId ? { ...el, title: action.payload.newValue } : el) }
 		}
 		case 'ADD_TODOLIST_TASK': {
 			return { ...state, [action.payload.newID]: [] }
