@@ -1,4 +1,4 @@
-import { Delete, DeleteForever } from "@mui/icons-material";
+import { DeleteForever } from "@mui/icons-material";
 import { Button, Checkbox } from "@mui/material";
 import React, { ChangeEvent } from "react";
 import { FilterValuesType } from "./App";

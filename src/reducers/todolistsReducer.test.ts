@@ -19,23 +19,23 @@ test('Remove First Todolist', () => {
 
 });
 
-test('Add New Todolist', () => {
+// test('Add New Todolist', () => {
 
-	let todolistID1 = v1();
-	let todolistID2 = v1();
-	let todolistID3 = v1();
+// 	let todolistID1 = v1();
+// 	let todolistID2 = v1();
+// 	let todolistID3 = v1();
 
-	const startState: TodolistsType[] = [
-		{ id: todolistID1, title: 'What to learn', filter: 'all' },
-		{ id: todolistID2, title: 'What to buy', filter: 'all' }
-	];
+// 	const startState: TodolistsType[] = [
+// 		{ id: todolistID1, title: 'What to learn', filter: 'all' },
+// 		{ id: todolistID2, title: 'What to buy', filter: 'all' }
+// 	];
 
-	const endState = todolistsReducer(startState, { type: 'ADD_TODOLIST', payload: { newID: todolistID3, newTitle: 'New Todolist' } })
+// 	const endState = todolistsReducer(startState, { type: 'ADD_TODOLIST', payload: { newID: todolistID3, newTitle: 'New Todolist' } })
 
-	expect(endState.length).toBe(3)
-	expect(endState[2].id).toBe(todolistID3)
+// 	expect(endState.length).toBe(3)
+// 	expect(endState[2].id).toBe(todolistID3)
 
-});
+// });
 
 test('Change Filter', () => {
 

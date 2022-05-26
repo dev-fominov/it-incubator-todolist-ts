@@ -139,39 +139,39 @@ test('Change Status Task', () => {
 
 });
 
-test('Add todolist task', () => {
+// test('Add todolist task', () => {
 
-	let todolistID1 = v1();
-	let todolistID2 = v1();
+// 	let todolistID1 = v1();
+// 	let todolistID2 = v1();
 
-	let todolistID3 = v1();
+// 	let todolistID3 = v1();
 
-	let taskId1 = v1();
-	let taskId2 = v1();
-	let taskId3 = v1();
-	let taskId4 = v1();
-	let taskId5 = v1();
+// 	let taskId1 = v1();
+// 	let taskId2 = v1();
+// 	let taskId3 = v1();
+// 	let taskId4 = v1();
+// 	let taskId5 = v1();
 
-	const startState: TasksType = {
-		[todolistID1]: [
-			{ id: taskId1, title: "HTML&CSS", isDone: true },
-			{ id: taskId2, title: "JS", isDone: true }
-		],
-		[todolistID2]: [
-			{ id: taskId3, title: "HTML&CSS2", isDone: true },
-			{ id: taskId4, title: "JS2", isDone: true },
-			{ id: taskId5, title: "ReactJS2", isDone: false }
-		]
-	}
+// 	const startState: TasksType = {
+// 		[todolistID1]: [
+// 			{ id: taskId1, title: "HTML&CSS", isDone: true },
+// 			{ id: taskId2, title: "JS", isDone: true }
+// 		],
+// 		[todolistID2]: [
+// 			{ id: taskId3, title: "HTML&CSS2", isDone: true },
+// 			{ id: taskId4, title: "JS2", isDone: true },
+// 			{ id: taskId5, title: "ReactJS2", isDone: false }
+// 		]
+// 	}
 
-	const endState = tasksReducer(startState, {
-		type: 'ADD_TODOLIST_TASK',
-		payload: { newID: todolistID3 }
-	})
+// 	const endState = tasksReducer(startState, {
+// 		type: 'ADD_TODOLIST_TASK',
+// 		payload: { newID: todolistID3 }
+// 	})
 
-	expect(endState[todolistID1].length).toBe(2)
-	expect(endState[todolistID2].length).toBe(3)
-	expect(endState[todolistID3].length).toBe(0)
-	expect(Object.keys(endState).length).toBe(3)
+// 	expect(endState[todolistID1].length).toBe(2)
+// 	expect(endState[todolistID2].length).toBe(3)
+// 	expect(endState[todolistID3].length).toBe(0)
+// 	expect(Object.keys(endState).length).toBe(3)
 
-});
+// });

@@ -1,13 +1,15 @@
 import { Menu } from '@mui/icons-material';
 import { AppBar, Button, Grid, IconButton, Paper, Toolbar, Typography } from '@mui/material';
 import { Container } from '@mui/system';
-import React, { useReducer } from 'react';
-import { v1 } from 'uuid';
+import React from 'react';
 import './App.css';
 import FullInput from './FullInput';
-import { addTaskAC, addTodoListTaskAC, changeStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer } from './reducers/tasksReducer';
-import { addTodoListAC, changeFilterAC, onChangeTodolistTitleAC, removeTodolistHandlerAC, todolistsReducer } from './reducers/todolistsReducer';
+import { addTaskAC, addTodoListTaskAC, changeStatusAC, changeTaskTitleAC, removeTaskAC } from './reducers/tasksReducer';
+import { addTodoListAC, changeFilterAC, onChangeTodolistTitleAC, removeTodolistHandlerAC } from './reducers/todolistsReducer';
 import { TaskType, TodoList } from './TodoList';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppStateType } from './reducers/store';
+import { v1 } from 'uuid';
 
 export type FilterValuesType = "all" | "completed" | "active";
 export type TodolistsType = {
@@ -25,64 +27,42 @@ export type TasksType = {
 
 function App() {
 
-    let todolistID1 = v1();
-    let todolistID2 = v1();
-
-    let [todolists, todolistsDispatch] = useReducer(todolistsReducer, [
-        { id: todolistID1, title: 'What to learn', filter: 'all' },
-        { id: todolistID2, title: 'What to buy', filter: 'all' },
-    ])
-
-    let [tasks, tasksDispatch] = useReducer(tasksReducer, {
-        [todolistID1]: [
-            { id: v1(), title: "HTML&CSS", isDone: true },
-            { id: v1(), title: "JS", isDone: true },
-            { id: v1(), title: "ReactJS", isDone: false },
-            { id: v1(), title: "Rest API", isDone: false },
-            { id: v1(), title: "GraphQL", isDone: false },
-        ],
-        [todolistID2]: [
-            { id: v1(), title: "HTML&CSS2", isDone: true },
-            { id: v1(), title: "JS2", isDone: true },
-            { id: v1(), title: "ReactJS2", isDone: false },
-            { id: v1(), title: "Rest API2", isDone: false },
-            { id: v1(), title: "GraphQL2", isDone: false },
-        ]
-    });
+    const dispath = useDispatch();
+    const tasks = useSelector<AppStateType, TasksType>(state => state.tasks)
+    const todolists = useSelector<AppStateType, Array<TodolistsType>>(state => state.todolists)
 
     function removeTask(todolistID: string, taskId: string) {
-        tasksDispatch(removeTaskAC(todolistID, taskId))
+        dispath(removeTaskAC(todolistID, taskId))
     }
 
     const removeTodolistHandler = (todolistID: string) => {
-        todolistsDispatch(removeTodolistHandlerAC(todolistID))
+        dispath(removeTodolistHandlerAC(todolistID))
     }
 
     function addTask(todolistID: string, title: string) {
-        tasksDispatch(addTaskAC(todolistID, title))
+        dispath(addTaskAC(todolistID, title))
     }
 
     function changeStatus(todolistID: string, taskId: string, isDone: boolean) {
-        tasksDispatch(changeStatusAC(todolistID, taskId, isDone))
+        dispath(changeStatusAC(todolistID, taskId, isDone))
     }
 
     function changeTaskTitle(todolistID: string, taskId: string, newValue: string) {
-        tasksDispatch(changeTaskTitleAC(todolistID, taskId, newValue))
+        dispath(changeTaskTitleAC(todolistID, taskId, newValue))
     }
 
     function changeFilter(todolistID: string, value: FilterValuesType) {
-        todolistsDispatch(changeFilterAC(todolistID, value))
+        dispath(changeFilterAC(todolistID, value))
     }
 
     const addTodoList = (newTitle: string) => {
-        debugger
-        let newID = v1();
-        todolistsDispatch(addTodoListAC(newID, newTitle));
-        tasksDispatch(addTodoListTaskAC(newID));
+        let newID: string = v1();
+        dispath(addTodoListAC(newID, newTitle));
+        dispath(addTodoListTaskAC(newID));
     }
 
     const onChangeTodolistTitle = (todolistID: string, newTitle: string) => {
-        todolistsDispatch(onChangeTodolistTitleAC(todolistID, newTitle))
+        dispath(onChangeTodolistTitleAC(todolistID, newTitle))
     }
 
     return (
@@ -99,7 +79,7 @@ function App() {
                 </Toolbar>
             </AppBar>
             <Container fixed>
-                <Grid container style={{padding: '20px 0px'}}>
+                <Grid container style={{ padding: '20px 0px' }}>
                     <FullInput callBack={addTodoList} />
                 </Grid>
                 <Grid container spacing={3}>
@@ -115,7 +95,7 @@ function App() {
 
                             return (
                                 <Grid item>
-                                    <Paper style={{padding: '15px'}}>
+                                    <Paper style={{ padding: '15px' }}>
                                         <TodoList
                                             key={t.id}
                                             todolistID={t.id}
