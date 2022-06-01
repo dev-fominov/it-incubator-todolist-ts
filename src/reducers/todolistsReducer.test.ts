@@ -2,15 +2,22 @@ import { v1 } from 'uuid';
 import { TodolistsType } from '../App';
 import { todolistsReducer } from './todolistsReducer';
 
-test('Remove First Todolist', () => {
+let todolistID1: string
+let todolistID2: string
+let startState: TodolistsType[]
 
-	let todolistID1 = v1();
-	let todolistID2 = v1();
-
-	const startState: TodolistsType[] = [
+beforeEach(() => {
+	todolistID1 = v1()
+	todolistID2 = v1()
+	startState = [
 		{ id: todolistID1, title: 'What to learn', filter: 'all' },
 		{ id: todolistID2, title: 'What to buy', filter: 'all' }
 	];
+})
+
+
+
+test('Remove First Todolist', () => {
 
 	const endState = todolistsReducer(startState, { type: 'REMOVE_TODOLIST_HANDLER', payload: { todolistID: todolistID1 } })
 
@@ -19,33 +26,24 @@ test('Remove First Todolist', () => {
 
 });
 
-// test('Add New Todolist', () => {
+test('Add New Todolist', () => {
 
-// 	let todolistID1 = v1();
-// 	let todolistID2 = v1();
-// 	let todolistID3 = v1();
+	let todolistID3 = v1();
 
-// 	const startState: TodolistsType[] = [
-// 		{ id: todolistID1, title: 'What to learn', filter: 'all' },
-// 		{ id: todolistID2, title: 'What to buy', filter: 'all' }
-// 	];
+	const endState = todolistsReducer(startState, {
+		type: 'ADD_TODOLIST',
+		payload: {
+			newId: todolistID3,
+			newTitle: 'New Todolist'
+		}
+	})
 
-// 	const endState = todolistsReducer(startState, { type: 'ADD_TODOLIST', payload: { newID: todolistID3, newTitle: 'New Todolist' } })
+	expect(endState.length).toBe(3)
+	expect(endState[2].id).toBe(todolistID3)
 
-// 	expect(endState.length).toBe(3)
-// 	expect(endState[2].id).toBe(todolistID3)
-
-// });
+});
 
 test('Change Filter', () => {
-
-	let todolistID1 = v1();
-	let todolistID2 = v1();
-
-	const startState: TodolistsType[] = [
-		{ id: todolistID1, title: 'What to learn', filter: 'all' },
-		{ id: todolistID2, title: 'What to buy', filter: 'all' }
-	];
 
 	const endState = todolistsReducer(startState, { type: 'CHANGE_FILTER', payload: { todolistID: todolistID2, value: 'completed' } })
 
@@ -55,14 +53,6 @@ test('Change Filter', () => {
 });
 
 test('On Change Todolist Title', () => {
-
-	let todolistID1 = v1();
-	let todolistID2 = v1();
-
-	const startState: TodolistsType[] = [
-		{ id: todolistID1, title: 'What to learn', filter: 'all' },
-		{ id: todolistID2, title: 'What to buy', filter: 'all' }
-	];
 
 	const endState = todolistsReducer(startState, { type: 'ON_CHANGE_TODOLIST_TITLE', payload: { todolistID: todolistID1, newTitle: 'New Title Test' } })
 
