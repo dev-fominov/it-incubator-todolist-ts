@@ -6,7 +6,7 @@ type EditableSpanType = {
 	onChange: (newValue: string)=>void
 }
 
-function EditableSpan(props: EditableSpanType) {
+export const EditableSpan = ((props: EditableSpanType) => {
 
 	let [edit, setEdit] = useState(false)
 	let [title, setTitle] = useState("")
@@ -29,6 +29,5 @@ function EditableSpan(props: EditableSpanType) {
 		? <TextField value={title} variant="standard" onBlur={activateView} autoFocus onChange={onChangeTitleHandler} /> 
 		: <span onDoubleClick={activateEdit}>{props.title}</span>
 	)
-}
-
-export default EditableSpan
+	
+})

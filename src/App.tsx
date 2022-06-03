@@ -1,7 +1,7 @@
 import { Menu } from '@mui/icons-material';
 import { AppBar, Button, Grid, IconButton, Paper, Toolbar, Typography } from '@mui/material';
 import { Container } from '@mui/system';
-import React from 'react';
+import React, { useCallback } from 'react';
 import './App.css';
 import FullInput from './FullInput';
 import { addTaskAC, addTodoListTaskAC, changeStatusAC, changeTaskTitleAC, removeTaskAC } from './reducers/tasksReducer';
@@ -31,39 +31,39 @@ function App() {
     const tasks = useSelector<AppStateType, TasksType>(state => state.tasks)
     const todolists = useSelector<AppStateType, Array<TodolistsType>>(state => state.todolists)
 
-    function removeTask(todolistID: string, taskId: string) {
+    const removeTask = useCallback((todolistID: string, taskId: string) => {
         dispath(removeTaskAC(todolistID, taskId))
-    }
+    }, [dispath])
 
-    const removeTodolistHandler = (todolistID: string) => {
+    const removeTodolistHandler = useCallback((todolistID: string) => {
         dispath(removeTodolistHandlerAC(todolistID))
-    }
+    }, [dispath])
 
-    function addTask(todolistID: string, title: string) {
+    const addTask = useCallback((todolistID: string, title: string) => {
         dispath(addTaskAC(todolistID, title))
-    }
+    }, [dispath])
 
-    function changeStatus(todolistID: string, taskId: string, isDone: boolean) {
+    const changeStatus = useCallback((todolistID: string, taskId: string, isDone: boolean) => {
         dispath(changeStatusAC(todolistID, taskId, isDone))
-    }
+    }, [dispath])
 
-    function changeTaskTitle(todolistID: string, taskId: string, newValue: string) {
+    const changeTaskTitle = useCallback((todolistID: string, taskId: string, newValue: string) => {
         dispath(changeTaskTitleAC(todolistID, taskId, newValue))
-    }
+    }, [dispath])
 
-    function changeFilter(todolistID: string, value: FilterValuesType) {
+    const changeFilter = useCallback((todolistID: string, value: FilterValuesType) => {
         dispath(changeFilterAC(todolistID, value))
-    }
+    }, [dispath])
 
-    const addTodoList = (newTitle: string) => {
+    const onChangeTodolistTitle = useCallback((todolistID: string, newTitle: string) => {
+        dispath(onChangeTodolistTitleAC(todolistID, newTitle))
+    }, [dispath])
+
+    const addTodoList = useCallback((newTitle: string) => {
         let newID: string = v1();
         dispath(addTodoListAC(newID, newTitle));
         dispath(addTodoListTaskAC(newID));
-    }
-
-    const onChangeTodolistTitle = (todolistID: string, newTitle: string) => {
-        dispath(onChangeTodolistTitleAC(todolistID, newTitle))
-    }
+    }, [dispath]);
 
     return (
         <div className="App">
@@ -86,12 +86,6 @@ function App() {
                     {
                         todolists.map((t: TodolistsType) => {
                             let tasksForTodoList = tasks[t.id];
-                            if (t.filter === 'completed') {
-                                tasksForTodoList = tasks[t.id].filter(t => t.isDone === true);
-                            }
-                            if (t.filter === 'active') {
-                                tasksForTodoList = tasks[t.id].filter(t => t.isDone === false);
-                            }
 
                             return (
                                 <Grid item>

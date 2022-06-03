@@ -6,15 +6,12 @@ export type FullInputType = {
 	callBack: (newTitle: string) => void
 }
 
-function FullInput(props: FullInputType) {
-
+export const FullInput = React.memo((props: FullInputType) => {
 	const [newTaskTitle, setNewTaskTitle] = useState("");
 	const [error, setError] = useState<string | null>(null);
-
 	const onNewTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
 		setNewTaskTitle(e.currentTarget.value)
 	}
-
 	const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
 		setError(null)
 		if (e.charCode === 13) {
@@ -22,7 +19,6 @@ function FullInput(props: FullInputType) {
 			setNewTaskTitle("");
 		}
 	}
-
 	const addTaskHandler = () => {
 		if (newTaskTitle.trim() === '') {
 			setError("Title is required")
@@ -31,7 +27,6 @@ function FullInput(props: FullInputType) {
 		props.callBack(newTaskTitle.trim());
 		setNewTaskTitle("");
 	}
-
 	return (
 		<div>
 			<TextField
@@ -45,6 +40,7 @@ function FullInput(props: FullInputType) {
 			<Button onClick={addTaskHandler} variant="contained" > + </Button>
 		</div>
 	)
-}
+
+});
 
 export default FullInput
