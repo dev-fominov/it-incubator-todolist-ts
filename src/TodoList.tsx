@@ -3,6 +3,7 @@ import { Button, Checkbox } from "@mui/material";
 import React, { ChangeEvent, useCallback } from "react";
 import { FilterValuesType } from "./App";
 import {EditableSpan} from "./components/EditableSpan";
+import { Task } from "./components/Task";
 import FullInput from "./FullInput";
 
 type TodoListPropsType = {
@@ -55,26 +56,14 @@ export const TodoList = React.memo((props: TodoListPropsType) => {
 			<div>
 				{
 					tasksForTodoList.map((t) => {
-
-						const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
-							props.changeStatus(props.todolistID, t.id, e.currentTarget.checked);
-						}
-
-						const onChangeTitleHandler = (newValue: string) => {
-							props.changeTaskTitle(props.todolistID, t.id, newValue);
-						}
-
-						return <div key={t.id}>
-							<Checkbox
-								onChange={onChangeStatusHandler}
-								checked={t.isDone}
-								color="secondary"
-							/>
-							<EditableSpan title={t.title} onChange={onChangeTitleHandler} />
-							<Button onClick={() => { props.removeTask(props.todolistID, t.id) }}>
-								<DeleteForever />
-							</Button>
-						</div>
+						return <Task 
+							key={t.id}
+							task={t}
+							changeStatus={props.changeStatus}
+							changeTaskTitle={props.changeTaskTitle}
+							removeTask={props.removeTask}
+							todolistID={props.todolistID}
+						/>
 					})
 				}
 			</div>
