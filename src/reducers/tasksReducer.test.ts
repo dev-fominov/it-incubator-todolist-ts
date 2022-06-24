@@ -1,4 +1,5 @@
 import { v1 } from 'uuid';
+import { TaskPriorities, TaskStatuses } from '../api/todolists-api';
 import { TasksType } from '../App';
 import { tasksReducer } from './tasksReducer';
 
@@ -24,13 +25,13 @@ beforeEach(() => {
 
 	startState = {
 		[todolistID1]: [
-			{ id: taskId1, title: "HTML&CSS", isDone: true },
-			{ id: taskId2, title: "JS", isDone: true }
+			{ id: taskId1, title: "HTML&CSS", status: TaskStatuses.Completed, todoListId: todolistID1, startDate: '', addedDate: '', deadline: '', description: '', order: 0, priority: TaskPriorities.Low },
+			{ id: taskId2, title: "JS", status: TaskStatuses.Completed, todoListId: todolistID1, startDate: '', addedDate: '', deadline: '', description: '', order: 0, priority: TaskPriorities.Low }
 		],
 		[todolistID2]: [
-			{ id: taskId3, title: "HTML&CSS2", isDone: true },
-			{ id: taskId4, title: "JS2", isDone: true },
-			{ id: taskId5, title: "ReactJS2", isDone: false }
+			{ id: taskId3, title: "HTML&CSS2", status: TaskStatuses.Completed, todoListId: todolistID2, startDate: '', addedDate: '', deadline: '', description: '', order: 0, priority: TaskPriorities.Low },
+			{ id: taskId4, title: "JS2", status: TaskStatuses.Completed, todoListId: todolistID2, startDate: '', addedDate: '', deadline: '', description: '', order: 0, priority: TaskPriorities.Low },
+			{ id: taskId5, title: "ReactJS2", status: TaskStatuses.New, todoListId: todolistID2, startDate: '', addedDate: '', deadline: '', description: '', order: 0, priority: TaskPriorities.Low }
 		]
 	}
 
@@ -65,14 +66,14 @@ test('Change Task Title', () => {
 
 	const endState = tasksReducer(startState, {
 		type: 'CHANGE_STATUS',
-		payload: { todolistID: todolistID2, taskId: taskId4, isDone: false }
+		payload: { todolistID: todolistID2, taskId: taskId4, status: TaskStatuses.New }
 	})
 
 	expect(endState[todolistID1].length).toBe(2)
 	expect(endState[todolistID2].length).toBe(3)
-	expect(endState[todolistID2][0].isDone).toBe(true)
-	expect(endState[todolistID2][1].isDone).toBe(false)
-	expect(endState[todolistID2][2].isDone).toBe(false)
+	expect(endState[todolistID2][0].status).toBe(TaskStatuses.Completed)
+	expect(endState[todolistID2][1].status).toBe(TaskStatuses.New)
+	expect(endState[todolistID2][2].status).toBe(TaskStatuses.New)
 
 });
 

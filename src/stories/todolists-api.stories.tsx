@@ -60,9 +60,6 @@ export const UpdateTodolistTitle = () => {
 
 	return <div>{JSON.stringify(state)}</div>
 }
-
-
-
 export const GetTasks = () => {
 	const [state, setState] = useState<any>(null)
 	const [todolistId, setTodolistId] = useState<string>("")
@@ -85,7 +82,6 @@ export const GetTasks = () => {
 		</div>
 	</div>
 }
-
 export const DeleteTasks = () => {
 	const [state, setState] = useState<any>(null)
 
@@ -100,6 +96,40 @@ export const DeleteTasks = () => {
 	}, [])
 	return <div>{JSON.stringify(state)}</div>
 }
+
+
+// export const GetOzon = () => {
+// 	const [state, setState] = useState<any>(null)
+
+// 	const todolistId = '32c394aa-1196-416e-9119-3401ee9a8582'
+// 	const title = 'New title string'
+
+// 	useEffect(() => {
+// 		todolistsAPI.getOzon()
+// 			.then((res) => {
+// 				setState(res.data)
+// 			})
+
+// 	}, [])
+// 	return <div>{JSON.stringify(state)}</div>
+// }
+
+// export const PostToken = () => {
+// 	const [state, setState] = useState<any>(null)
+
+// 	const client_id = 'ApiTest_11111111-1111-1111-1111-111111111111'
+// 	const client_secret = 'SRYksX3PBPUYj73A6cNqbQYRSaYNpjSodIMeWoSCQ8U='
+
+// 	useEffect(() => {
+// 		todolistsAPI.postToken(client_id, client_secret)
+// 			.then((res) => {
+// 				setState(res.data)
+// 			})
+
+// 	}, [])
+// 	return <div>{JSON.stringify(state)}</div>
+// }
+
 
 export const UpdateTask = () => {
 	const [state, setState] = useState<any>(null)

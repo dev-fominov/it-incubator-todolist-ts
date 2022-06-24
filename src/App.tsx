@@ -5,18 +5,19 @@ import React, { useCallback } from 'react';
 import './App.css';
 import FullInput from './FullInput';
 import { addTaskAC, addTodoListTaskAC, changeStatusAC, changeTaskTitleAC, removeTaskAC } from './reducers/tasksReducer';
-import { addTodoListAC, changeFilterAC, onChangeTodolistTitleAC, removeTodolistHandlerAC } from './reducers/todolistsReducer';
-import { TaskType, TodoList } from './TodoList';
+import { addTodoListAC, changeFilterAC, FilterValuesType, onChangeTodolistTitleAC, removeTodolistHandlerAC, TodolistDomainType } from './reducers/todolistsReducer';
+import { TodoList } from './TodoList';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppStateType } from './reducers/store';
 import { v1 } from 'uuid';
+import { TaskStatuses, TaskType, todolistsType } from './api/todolists-api';
 
-export type FilterValuesType = "all" | "completed" | "active";
-export type TodolistsType = {
-    id: string
-    title: string
-    filter: FilterValuesType
-}
+
+// export type TodolistsType = {
+//     id: string
+//     title: string
+//     filter: FilterValuesType
+// }
 export type ArrayTaskType = {
     tasks: TaskType[]
 }
@@ -29,7 +30,7 @@ function App() {
 
     const dispath = useDispatch();
     const tasks = useSelector<AppStateType, TasksType>(state => state.tasks)
-    const todolists = useSelector<AppStateType, Array<TodolistsType>>(state => state.todolists)
+    const todolists = useSelector<AppStateType, Array<TodolistDomainType>>(state => state.todolists)
 
     const removeTask = useCallback((todolistID: string, taskId: string) => {
         dispath(removeTaskAC(todolistID, taskId))
@@ -43,8 +44,8 @@ function App() {
         dispath(addTaskAC(todolistID, title))
     }, [dispath])
 
-    const changeStatus = useCallback((todolistID: string, taskId: string, isDone: boolean) => {
-        dispath(changeStatusAC(todolistID, taskId, isDone))
+    const changeStatus = useCallback((todolistID: string, taskId: string, status: TaskStatuses) => {
+        dispath(changeStatusAC(todolistID, taskId, status))
     }, [dispath])
 
     const changeTaskTitle = useCallback((todolistID: string, taskId: string, newValue: string) => {
@@ -84,7 +85,7 @@ function App() {
                 </Grid>
                 <Grid container spacing={3}>
                     {
-                        todolists.map((t: TodolistsType) => {
+                        todolists.map((t) => {
                             let tasksForTodoList = tasks[t.id];
 
                             return (
