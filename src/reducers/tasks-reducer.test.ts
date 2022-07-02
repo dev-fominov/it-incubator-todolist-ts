@@ -1,7 +1,8 @@
 import { v1 } from 'uuid';
 import { TaskPriorities, TaskStatuses } from '../api/todolists-api';
-import { TasksType } from '../App';
-import { tasksReducer } from './tasksReducer';
+import { TasksType } from '../components/TodolistsList';
+import { addTaskAC, removeTaskAC, setTasksAC, tasksReducer, updateTaskAC } from './tasks-reducer';
+import { setTodolistsAC } from './todolists-reducer';
 
 let todolistID1: string
 let todolistID2: string
@@ -39,10 +40,8 @@ beforeEach(() => {
 
 test('Remove Task', () => {
 
-	const endState = tasksReducer(startState, {
-		type: 'REMOVE_TASK',
-		payload: { todolistID: todolistID1, taskId: taskId2 }
-	})
+	const action = removeTaskAC(todolistID1,taskId2)
+	const endState = tasksReducer(startState, action)
 
 	expect(endState[todolistID1].length).toBe(1)
 	expect(endState[todolistID2].length).toBe(3)
@@ -51,10 +50,20 @@ test('Remove Task', () => {
 
 test('Add New Task', () => {
 
-	const endState = tasksReducer(startState, {
-		type: 'ADD_TASK',
-		payload: { todolistID: todolistID1, title: "New Title Test Task" }
+	const action = addTaskAC({
+		title: "New Title Test Task",
+		addedDate: '',
+		deadline: '',
+		description: '',
+		id: '12345',
+		order: 0,
+		priority: 0,
+		startDate: '',
+		status: TaskStatuses.New,
+		todoListId: todolistID1
 	})
+
+	const endState = tasksReducer(startState, action)
 
 	expect(endState[todolistID1].length).toBe(3)
 	expect(endState[todolistID2].length).toBe(3)
@@ -62,12 +71,10 @@ test('Add New Task', () => {
 
 });
 
-test('Change Task Title', () => {
+test('Change Task Status', () => {
 
-	const endState = tasksReducer(startState, {
-		type: 'CHANGE_STATUS',
-		payload: { todolistID: todolistID2, taskId: taskId4, status: TaskStatuses.New }
-	})
+	const action = updateTaskAC( todolistID2, taskId4, {status: TaskStatuses.New} )
+	const endState = tasksReducer(startState, action)
 
 	expect(endState[todolistID1].length).toBe(2)
 	expect(endState[todolistID2].length).toBe(3)
@@ -77,12 +84,10 @@ test('Change Task Title', () => {
 
 });
 
-test('Change Status Task', () => {
+test('Change Title Task', () => {
 
-	const endState = tasksReducer(startState, {
-		type: 'CHANGE_TASK_TITLE',
-		payload: { todolistID: todolistID1, taskId: taskId1, newValue: "New Title" }
-	})
+	const action = updateTaskAC( todolistID1, taskId1, {title: "New Title"} )
+	const endState = tasksReducer(startState, action)
 
 	expect(endState[todolistID1].length).toBe(2)
 	expect(endState[todolistID2].length).toBe(3)
@@ -90,16 +95,30 @@ test('Change Status Task', () => {
 
 });
 
-test('Add todolist task', () => {
-	let todolistID3 = v1()
-	const endState = tasksReducer(startState, {
-		type: 'ADD_TODOLIST_TASK',
-		payload: { newId: todolistID3 }
-	})
+test('set todolists', () => {
+
+	const action = setTodolistsAC([
+		{ id: todolistID1, title: 'What to learn', addedDate: '', order: 0 },
+		{ id: todolistID2, title: 'What to buy', addedDate: '', order: 0 }
+	])
+
+	const endState = tasksReducer({}, action)
+	const keys = Object.keys(endState)
+
+	expect(endState[todolistID1]).toStrictEqual([])
+	expect(endState[todolistID2]).toStrictEqual([])
+	expect(keys.length).toBe(2)
+
+});
+
+test('set tasks', () => {
+
+	const action = setTasksAC(startState[todolistID1], todolistID1)
+
+	const endState = tasksReducer({
+		todolistID1: []
+	}, action)
 
 	expect(endState[todolistID1].length).toBe(2)
-	expect(endState[todolistID2].length).toBe(3)
-	expect(endState[todolistID3].length).toBe(0)
-	expect(Object.keys(endState).length).toBe(3)
 
 });

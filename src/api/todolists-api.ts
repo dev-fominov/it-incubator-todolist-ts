@@ -23,7 +23,7 @@ export type todolistsType = {
 	title: string
 }
 
-type ResponseType<D = {}> = {
+export type ResponseType<D = {}> = {
 	resultCode: number
 	messages: string[]
 	data: D
@@ -57,10 +57,10 @@ export type TaskType = {
 	addedDate: string
 }
 
-type UpdateTaskModelType = {
+export type UpdateTaskModelType = {
 	description: string
 	title: string
-	status: number
+	status: TaskStatuses
 	priority: number
 	startDate: string
 	deadline: string
@@ -95,7 +95,7 @@ export const todolistsAPI = {
 		return instance.put<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`, model)
 	},
 	createTask(todolistId: string, taskTitle: string) {
-		return instance.post<ResponseType<{ data: TaskType }>>(`todo-lists/${todolistId}/tasks`, { title: taskTitle })
+		return instance.post<ResponseType<{ item: TaskType }>>(`todo-lists/${todolistId}/tasks`, { title: taskTitle })
 	},
 	// getOzon() {
 	// 	return instance2.get(``)

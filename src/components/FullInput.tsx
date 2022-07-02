@@ -4,9 +4,10 @@ import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 
 export type FullInputType = {
 	callBack: (newTitle: string) => void
+	disabled?: boolean
 }
 
-export const FullInput = React.memo((props: FullInputType) => {
+export const FullInput = React.memo(({callBack, disabled = false}: FullInputType) => {
 	const [newTaskTitle, setNewTaskTitle] = useState("");
 	const [error, setError] = useState<string | null>(null);
 	const onNewTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -15,7 +16,7 @@ export const FullInput = React.memo((props: FullInputType) => {
 	const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
 		setError(null)
 		if (e.charCode === 13) {
-			props.callBack(newTaskTitle);
+			callBack(newTaskTitle);
 			setNewTaskTitle("");
 		}
 	}
@@ -24,7 +25,7 @@ export const FullInput = React.memo((props: FullInputType) => {
 			setError("Title is required")
 			return
 		}
-		props.callBack(newTaskTitle.trim());
+		callBack(newTaskTitle.trim());
 		setNewTaskTitle("");
 	}
 	return (
@@ -36,8 +37,9 @@ export const FullInput = React.memo((props: FullInputType) => {
 				error={!!error}
 				helperText={error}
 				variant="outlined"
+				disabled={disabled}
 			/>
-			<Button onClick={addTaskHandler} variant="contained" > + </Button>
+			<Button onClick={addTaskHandler} variant="contained" disabled={disabled} > + </Button>
 		</div>
 	)
 

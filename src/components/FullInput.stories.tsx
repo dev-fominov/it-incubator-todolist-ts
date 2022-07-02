@@ -12,3 +12,7 @@ const callback = action("Button 'add' was pressed inside the form");
 export const FullInputBaseExample = (props: any) => {
 	return <FullInput callBack={callback} />
 }
+
+export const FullInputDisabledExample = (props: any) => {
+	return <FullInput callBack={callback} disabled />
+}
