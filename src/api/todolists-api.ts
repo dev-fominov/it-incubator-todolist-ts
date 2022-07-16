@@ -72,6 +72,25 @@ type getTasksResponseType = {
 	items: TaskType[]
 }
 
+export const authAPI = {
+	login(data: authAPIType) {
+		return instance.post<ResponseType<{ userId?: number }>>(`auth/login`, data)
+	},
+	me() {
+		return instance.get<ResponseType<{id:number; email:string; login: string }>>(`auth/me`)
+	},
+	logout() {
+		return instance.delete<ResponseType<{iserId:number }>>(`auth/login`)
+	}
+}
+
+export type authAPIType = {
+	email: string
+	password: string
+	rememberMe: boolean
+	captcha?: string
+}
+
 export const todolistsAPI = {
 	getTodolists() {
 		return instance.get<todolistsType[]>(`todo-lists`)

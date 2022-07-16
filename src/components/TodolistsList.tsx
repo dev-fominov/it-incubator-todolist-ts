@@ -6,17 +6,20 @@ import FullInput from './FullInput';
 import { addTaskTC, removeTaskTC, updateTaskTC } from '../reducers/tasks-reducer';
 import { addTodolistTC, changeFilterAC, fetchTodolistsTC, FilterValuesType, onChangeTodolistTitleTC, removeTodolistTC } from '../reducers/todolists-reducer';
 import { TodoList } from './TodoList';
+import { Navigate } from "react-router-dom";
 
 export const TodolistsList: React.FC<PropsType> = ({ demo = false }) => {
 	const todolists = useAppSelector(state => state.todolists)
 	const tasks = useAppSelector(state => state.tasks)
+	const isLoggedIn = useAppSelector(state => state.login.isLoggedIn)
+
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		if (!demo) {
+		if (!demo || isLoggedIn) {
 			dispatch(fetchTodolistsTC())
 		}
-	}, [dispatch, demo])
+	}, [dispatch, demo, isLoggedIn])
 
 	const removeTask = useCallback(function (todolistId: string, id: string) {
 		dispatch(removeTaskTC(todolistId, id))
@@ -49,6 +52,10 @@ export const TodolistsList: React.FC<PropsType> = ({ demo = false }) => {
 	const addTodoList = useCallback((newTitle: string) => {
 		dispatch(addTodolistTC(newTitle));
 	}, [dispatch]);
+
+	if(!isLoggedIn) {
+		return <Navigate replace to="/login" />
+	}
 
 	return (
 		<>

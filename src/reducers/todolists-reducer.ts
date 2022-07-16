@@ -2,6 +2,7 @@ import { todolistsAPI, todolistsType } from '../api/todolists-api';
 import { v1 } from "uuid";
 import { AppThunk } from './store';
 import { RequestStatusType, setAppStatusAC } from '../app/app-reducer';
+import { handleServerNetworkError } from '../app/error-utils';
 
 export let todolistID1 = v1();
 export let todolistID2 = v1();
@@ -43,6 +44,9 @@ export const fetchTodolistsTC = (): AppThunk => (dispatch) => {
 		.then((res) => {
 			dispatch(setTodolistsAC(res.data))
 			dispatch(setAppStatusAC('succeeded'))
+		})
+		.catch((error) => {
+			handleServerNetworkError(error, dispatch)
 		})
 }
 export const removeTodolistTC = (todolistId: string): AppThunk => (dispatch) => {

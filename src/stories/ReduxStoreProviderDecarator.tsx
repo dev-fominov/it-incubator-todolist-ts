@@ -33,7 +33,11 @@ const initialGlobalState: RootState = {
 	},
 	app: {
 		error: null,
-		status: 'idle'
+		status: 'idle',
+		initialized: false
+	},
+	login: {
+		isLoggedIn: false
 	}
 }
 
